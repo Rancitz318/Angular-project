@@ -16,15 +16,11 @@
             "outputPath": "dist/first-app",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -77,18 +73,95 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "MyFirstApp": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/my-first-app",
+      "sourceRoot": "projects/my-first-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/my-first-app",
+            "index": "projects/my-first-app/src/index.html",
+            "main": "projects/my-first-app/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/my-first-app/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/my-first-app/src/favicon.ico",
+              "projects/my-first-app/src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/my-first-app/src/styles.css"
             ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "MyFirstApp:build:production"
+            },
+            "development": {
+              "browserTarget": "MyFirstApp:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "MyFirstApp:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/my-first-app/tsconfig.spec.json",
+            "assets": [
+              "projects/my-first-app/src/favicon.ico",
+              "projects/my-first-app/src/assets"
+            ],
+            "styles": ["projects/my-first-app/src/styles.css"],
             "scripts": []
           }
         }
